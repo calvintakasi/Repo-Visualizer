@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:host {
+  display: block !important;
+  width: 100% !important;
+  margin-bottom: 16px;
+}
+
+/* Ensure the wrapper doesn't collapse */
+#repo-visualizer-ui {
+  width: 100%;
+}
