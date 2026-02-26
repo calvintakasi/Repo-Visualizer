@@ -87,8 +87,28 @@ function App() {
             <QuickLinks owner={urlInfo.owner} repo={urlInfo.repo} quickLinks={data.quickLinks || []} />
           </div>
         ) : (
-          <div className="glass-card p-4 text-center border-red-500/30">
-            <p className="text-sm text-red-400">Could not load repo data.</p>
+         <div className="glass-card p-5 border-red-500/30 flex flex-col gap-3">
+            <div className="flex items-center gap-2 text-red-400 font-bold">
+              <span className="text-lg">⚠️</span>
+              <h3>Limit Exceeded</h3>
+            </div>
+            
+            <p className="text-xs text-gray-300 leading-relaxed">
+              GitHub limits public requests to 60 per hour. To unlock 5,000 requests/hour and continue scanning repositories seamlessly, please configure a Personal Access Token.
+            </p>
+
+            <div className="bg-white/5 rounded-lg p-3 border border-white/10 mt-1">
+              <span className="text-[10px] uppercase tracking-widest text-gray-500 font-bold mb-2 block">How to unlock:</span>
+              <ol className="text-[11px] text-gray-300 space-y-2 list-decimal list-inside marker:text-blue-500">
+                <li>
+                  Go to <a href="https://github.com/settings/tokens" target="_blank" rel="noreferrer" className="text-blue-400 hover:text-blue-300 hover:underline font-medium">GitHub Developer Settings</a>
+                </li>
+                <li>Generate a new token , name it whatever you want (no specific permissions/scopes required).</li>
+                <li>Go back to extensions <strong>Repo Visualizer</strong> then click on three dots icon , select <strong>Options</strong>.</li>
+                <li>Paste your token and click Save.</li>
+                <li>Now go back to repository , then try again.</li>
+              </ol>
+            </div>
           </div>
         )}
       </main>

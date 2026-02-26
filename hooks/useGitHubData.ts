@@ -10,7 +10,8 @@ export const useGitHubData = (owner: string, repo: string) => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const MY_TOKEN = import.meta.env.VITE_GITHUB_TOKEN;
+        const storage = await chrome.storage.local.get("gh_token");
+        const MY_TOKEN = storage.gh_token;
 
         const headers: Record<string, string> = MY_TOKEN
           ? { Authorization: `Bearer ${MY_TOKEN}` }
