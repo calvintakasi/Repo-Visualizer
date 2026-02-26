@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useGitHubData } from '../../hooks/useGitHubData.ts';
+import { QuickLinks } from '../../components/QuickLinks';
 
 function App() {
   const [urlInfo, setUrlInfo] = useState({ owner: '', repo: '' });
@@ -82,6 +83,8 @@ function App() {
                 )}
               </div>
             </div>
+
+            <QuickLinks owner={urlInfo.owner} repo={urlInfo.repo} quickLinks={data.quickLinks || []} />
           </div>
         ) : (
           <div className="glass-card p-4 text-center border-red-500/30">

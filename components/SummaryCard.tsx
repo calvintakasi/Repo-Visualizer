@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useGitHubData } from '../hooks/useGitHubData';
 import { TechBadge } from './TechBadge';
 import { StatItem } from './StatItem';
+import { QuickLinks } from './QuickLinks';
 
 export const SummaryCard = () => {
   const [urlInfo, setUrlInfo] = useState({ owner: '', repo: '' });
@@ -56,6 +57,8 @@ export const SummaryCard = () => {
           <span className="text-xs text-gray-500">No major framework detected</span>
         )}
       </div>
+
+      <QuickLinks owner={urlInfo.owner} repo={urlInfo.repo} quickLinks={data.quickLinks || []} />
     </div>
   );
 };

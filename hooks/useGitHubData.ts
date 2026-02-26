@@ -12,7 +12,9 @@ export const useGitHubData = (owner: string, repo: string) => {
       try {
         const MY_TOKEN = import.meta.env.VITE_GITHUB_TOKEN;
 
-        const headers = MY_TOKEN ? { Authorization: `Bearer ${MY_TOKEN}` } : {};
+        const headers: Record<string, string> = MY_TOKEN
+          ? { Authorization: `Bearer ${MY_TOKEN}` }
+          : {};
 
         const repoRes = await fetch(
           `https://api.github.com/repos/${owner}/${repo}`,
@@ -39,6 +41,22 @@ export const useGitHubData = (owner: string, repo: string) => {
           "api/requirements.txt",
           "pyproject.toml",
         ];
+
+        // Quick Links detection
+        const quickLinksPaths = [
+          "package.json",
+          "requirements.txt",
+          "Dockerfile",
+          "docker-compose.yml",
+          ".env.example",
+          "tsconfig.json",
+          "vite.config.ts",
+          "webpack.config.js",
+          "next.config.js",
+          "setup.py",
+          "Makefile",
+        ];
+
         const allPaths = [...jsPaths, ...pyPaths];
 
         const fileResponses = await Promise.all(
@@ -114,11 +132,26 @@ export const useGitHubData = (owner: string, repo: string) => {
         );
         const uniqueTech = [...new Set(normalizedTech)];
 
+        // Fetch quick links
+        const quickLinksResponses = await Promise.all(
+          quickLinksPaths.map((path) =>
+            fetch(
+              `https://api.github.com/repos/${owner}/${repo}/contents/${path}`,
+              { headers },
+            )
+              .then((res) => (res.ok ? path : null))
+              .catch(() => null),
+          ),
+        );
+
+        const detectedQuickLinks = quickLinksResponses.filter(Boolean);
+
         setData({
           stars: repoJson.stargazers_count || 0,
           issues: repoJson.open_issues_count || 0,
           lastUpdate: new Date(repoJson.pushed_at).toLocaleDateString(),
           tech: uniqueTech,
+          quickLinks: detectedQuickLinks,
         });
       } catch (err) {
         console.error("Visualizer Fetch Error:", err);
